@@ -3,6 +3,8 @@ from matplotlib import pyplot as plt
 from numpy.core.multiarray import ndarray
 from sklearn.datasets import make_blobs
 
+RNG = np.random.default_rng()
+
 
 def _initialize_random_centroids(K, data) -> ndarray:
     """Initializes and returns k random centroids"""
@@ -11,7 +13,7 @@ def _initialize_random_centroids(K, data) -> ndarray:
     centroids = np.empty((K, n))
     for i in range(K):
         # pick a random data point from X as the centroid
-        centroids[i] = data[np.random.choice(range(m))]
+        centroids[i] = data[RNG.choice(m)]
     return centroids
 
 
@@ -68,7 +70,6 @@ def kmeans(K, X, max_iterations=500):
 
 
 if __name__ == "__main__":
-    np.random.seed(23)
     X, y = make_blobs(n_samples=500, n_features=3, centers=3, random_state=123)
 
     # Plot each point, colored by its cluster

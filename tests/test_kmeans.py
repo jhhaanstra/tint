@@ -1,22 +1,23 @@
 import numpy as np
 from numpy.testing import assert_array_equal
 
-from src.tint.kmeans import (
+from tint import kmeans as kmeans_module
+from tint.kmeans import (
     _closest_centroid,
     _compute_means,
     _create_clusters,
     _euclidean_distance,
+    _initialize_random_centroids,
 )
-from tint.kmeans import _initialize_random_centroids
 
 
-def test_initialize_random_centroids():
-    np.random.seed(42)
+def test_initialize_random_centroids(monkeypatch):
+    monkeypatch.setattr(kmeans_module, "RNG", np.random.default_rng(42))
     centroids = _initialize_random_centroids(
         3, np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
     )
 
-    expected = np.array([[5, 6], [7, 8], [1, 2]])
+    expected = np.array([[1, 2], [7, 8], [5, 6]])
 
     assert_array_equal(centroids, expected)
 
